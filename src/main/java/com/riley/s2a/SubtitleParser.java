@@ -52,6 +52,16 @@ public class SubtitleParser {
         return this.blocks;
     }
 
+    public String printBlocks() {
+        StringBuilder sb = new StringBuilder();
+        for (SubtitleBlock block : blocks) {
+            sb.append(block.getIndex()).append("\n")
+            .append(block.getTimestamp()).append("\n")
+            .append(block.getFullText()).append("\n");
+        }
+        return sb.toString();
+    }
+
     public int countBlocks() {
         return blocks.size();
     }

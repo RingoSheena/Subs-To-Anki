@@ -13,7 +13,7 @@ public class SubtitleBlock {
         this.text = text;
     }
 
-    public String fullText() {
+    public String getFullText() {
         return String.join(" ", text);
     }
 
