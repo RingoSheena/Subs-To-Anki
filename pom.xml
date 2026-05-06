@@ -32,7 +32,8 @@
         <artifactId>lucene-analyzers-kuromoji</artifactId>
         <version>8.11.4</version>
         <scope>compile</scope>
-    </dependency>
+    </dependency> 
+
   </dependencies>
 
   <build>
