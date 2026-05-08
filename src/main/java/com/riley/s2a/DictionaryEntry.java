@@ -55,7 +55,7 @@ public class DictionaryEntry {
         sb.append("Reading: ").append(reading).append("\n");
         sb.append("Definition: ").append(definition).append("\n");
         sb.append("Reference: ").append(reference).append("\n");
-        sb.append("Sequence Number: ").append(sequenceNum).append("\n");
+        sb.append("Sequence Number: ").append(sequenceNum);
         return sb.toString();
     }
 }

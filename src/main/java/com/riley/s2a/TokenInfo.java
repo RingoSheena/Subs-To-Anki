@@ -6,13 +6,15 @@ public class TokenInfo {
     private String timestampEnd;
     private String timestampStart;
     private String text;
+    private DictionaryEntry dictionaryEntry;
 
-    public TokenInfo(String word, int subIndex, String timestampEnd, String timestampStart, String text) {
+    public TokenInfo(String word, int subIndex, String timestampEnd, String timestampStart, String text, DictionaryEntry dictionaryEntry) {
         this.word = word;
         this.subIndex = subIndex;
         this.timestampEnd = timestampEnd;
         this.timestampStart = timestampStart;
         this.text = text;
+        this.dictionaryEntry = dictionaryEntry;
     }
 
     public String getWord() {
@@ -34,7 +36,11 @@ public class TokenInfo {
     public String getText() {
         return text;
     }
-
+    
+    public DictionaryEntry getDictionaryEntry() {
+        return dictionaryEntry;
+    }
+    
     public String getAllInfo() {
         StringBuilder sb = new StringBuilder();
         sb.append(word).append("\n");

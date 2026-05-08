@@ -13,12 +13,16 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 public class TokenBuilder {
     private List<TokenInfo> tokens;
+    private int nullcount;
 
     public TokenBuilder() {
         this.tokens = new ArrayList<TokenInfo>();
+        this.nullcount = 0;
     }
 
     public void build(List<SubtitleBlock> subtitleBlocks) throws IOException {
+        String tsvPath = "C:\\Users\\swift\\OneDrive\\Documents\\Code\\S2A\\s2a\\data\\simpledict.tsv";
+        DictionaryLookup dictionaryLookup = new DictionaryLookup(tsvPath);
         JapaneseTokenizer tokenizer = new JapaneseTokenizer(null, true, JapaneseTokenizer.Mode.SEARCH);
         
         CharTermAttribute surfaceForm = tokenizer.addAttribute(CharTermAttribute.class);
@@ -41,10 +45,17 @@ public class TokenBuilder {
                     if (!isJapanese(base) || endsWithSmallTsu(base)) { continue; }
                     if (set.contains(surface)) { continue; }
 
-
+                    DictionaryEntry entry = dictionaryLookup.lookup(base);
+                    if (entry == null) {
+                        entry = dictionaryLookup.lookup(surface);
+                    }    
+                    if (entry == null) {
+                        nullcount++;
+                        continue;
+                    }
 
                     if (set.add(base)) {
-                        tokenList.add(new TokenInfo(base, sb.getIndex(), sb.getTimestampStart(), sb.getTimestampEnd(), sb.getFullText()));
+                        tokenList.add(new TokenInfo(base, sb.getIndex(), sb.getTimestampStart(), sb.getTimestampEnd(), sb.getFullText(), entry));
                     }
                 }
     
@@ -68,9 +79,14 @@ public class TokenBuilder {
                 return true;
             }
         }
-
+        
         return false;
     }
+
+    public int getNullcount() {
+        return nullcount;
+    }
+
     public static boolean isHiragana(char c) {
         return c >= '\u3040' && c <= '\u309F';
     }
