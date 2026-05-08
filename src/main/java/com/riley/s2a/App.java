@@ -7,11 +7,16 @@ import java.util.List;
 
 public class App 
 {
+    public static String videoPath = "C:\\Users\\swift\\OneDrive\\Documents\\Code\\S2A\\s2a\\data\\1.mkv";
+    public static String audioFolder = "C:\\Users\\swift\\OneDrive\\Documents\\Code\\S2A\\s2a\\output\\audio";
+    public static String imageFolder = "C:\\Users\\swift\\OneDrive\\Documents\\Code\\S2A\\s2a\\output\\images";
+
     public static String subtitlePath = "C:\\Users\\swift\\OneDrive\\Documents\\Code\\S2A\\s2a\\data\\ep01.srt";
     public static Path dictionaryPath = Path.of("C:\\Users\\swift\\OneDrive\\Documents\\Code\\S2A\\s2a\\data\\JMdict_e.xml");
     public static String tsvPathString = "C:\\Users\\swift\\OneDrive\\Documents\\Code\\S2A\\s2a\\data\\simpledict.tsv";
     public static void main( String[] args ) throws Exception { 
 
+        FfmpegInterface mediaInteface = new FfmpegInterface(videoPath, audioFolder, imageFolder);
         SubtitleParser parser = new SubtitleParser(subtitlePath);
         parser.parse();
         List<SubtitleBlock> blox = parser.getBlocks();
@@ -23,8 +28,11 @@ public class App
             System.out.println(++i);
             System.out.println(TB.getAllInfo());
             System.out.println(TB.getDictionaryEntry().getAllInfo());
+            // mediaInteface.extractAudio(TB.getTimestampStart(), TB.getTimestampEnd(), "luckytest");
+            // mediaInteface.extractImage(TB.getTimestampStart(), "luckytest");
         }
         System.out.println(tokenBlox.size());
+        System.out.println("Null count: " + builder.getNullcount());
 
         // DictionaryParser dictParser = new DictionaryParser("C:\\Users\\swift\\OneDrive\\Documents\\Code\\S2A\\s2a\\data\\JMdict_e.xml");
         // dictParser.parse();
@@ -35,7 +43,6 @@ public class App
         // DictionaryLookup dictionaryLookup = new DictionaryLookup(tsvPathString);
         // DictionaryEntry word = dictionaryLookup.lookup("会う");
         // System.out.println(word.getAllInfo());
-        System.out.println("Null count: " + builder.getNullcount());
 
     }
 }

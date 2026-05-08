@@ -40,12 +40,12 @@ public class TokenInfo {
     public DictionaryEntry getDictionaryEntry() {
         return dictionaryEntry;
     }
-    
+
     public String getAllInfo() {
         StringBuilder sb = new StringBuilder();
         sb.append(word).append("\n");
         sb.append(subIndex).append("\n");
-        sb.append(timestampEnd).append(" --> ").append(timestampStart).append("\n");
+        sb.append(timestampStart).append(" --> ").append(timestampEnd).append("\n");
         sb.append(String.join("\n", text)).append("\n");
         return sb.toString();
     }

@@ -55,7 +55,7 @@ public class TokenBuilder {
                     }
 
                     if (set.add(base)) {
-                        tokenList.add(new TokenInfo(base, sb.getIndex(), sb.getTimestampStart(), sb.getTimestampEnd(), sb.getFullText(), entry));
+                        tokenList.add(new TokenInfo(base, sb.getIndex(), sb.getTimestampEnd(), sb.getTimestampStart(), sb.getFullText(), entry));
                     }
                 }
     
