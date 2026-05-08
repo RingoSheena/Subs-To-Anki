@@ -9,6 +9,8 @@ public class FfmpegInterface {
     private String imageFolder;
     private int countA;
     private int countI;
+    private String audioName;
+    private String imageName;
 
     public FfmpegInterface(String videoPath, String audioFolder, String imageFolder) {
         this.videoPath = videoPath;
@@ -16,13 +18,16 @@ public class FfmpegInterface {
         this.imageFolder = imageFolder;
         this.countA = 0;
         this.countI = 0;
+        this.audioName = "";
+        this.imageName = "";
 
         new File(audioFolder).mkdirs();
         new File(imageFolder).mkdirs();
     }
 
     public String extractAudio(String startTime, String endTime, String fileName) throws IOException, InterruptedException {
-        String audioPath = audioFolder + File.separator + fileName + countA + "audio.mp3";
+        String audioPath = audioFolder + File.separator + fileName + countA + ".mp3";
+        this.audioName = fileName + countA + ".mp3";
         
         ProcessBuilder pb = new ProcessBuilder(
             "ffmpeg",
@@ -46,7 +51,8 @@ public class FfmpegInterface {
         return audioPath;
     }
     public String extractImage(String startTime, String fileName) throws IOException, InterruptedException {
-        String imagePath = imageFolder + File.separator + fileName + countI + "image.jpg";
+        String imagePath = imageFolder + File.separator + fileName + countI + ".jpg";
+        this.imageName = fileName + countI + ".jpg";
         
         ProcessBuilder pb = new ProcessBuilder(
             "ffmpeg",
@@ -71,6 +77,13 @@ public class FfmpegInterface {
 
     public String formatTime(String time) {
         return time.replace(",", ".");
+    }
+
+    public String getAudioName() {
+        return audioName;
+    }
+    public String getImageName() {
+        return imageName;
     }
 
     private double toSeconds(String time) {

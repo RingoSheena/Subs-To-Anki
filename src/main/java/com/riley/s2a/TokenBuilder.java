@@ -14,13 +14,15 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 public class TokenBuilder {
     private List<TokenInfo> tokens;
     private int nullcount;
+    private int count;
 
     public TokenBuilder() {
         this.tokens = new ArrayList<TokenInfo>();
         this.nullcount = 0;
+        this.count = 0;
     }
 
-    public void build(List<SubtitleBlock> subtitleBlocks) throws IOException {
+    public void build(List<SubtitleBlock> subtitleBlocks, String audioName, String imageName) throws IOException {
         String tsvPath = "C:\\Users\\swift\\OneDrive\\Documents\\Code\\S2A\\s2a\\data\\simpledict.tsv";
         DictionaryLookup dictionaryLookup = new DictionaryLookup(tsvPath);
         JapaneseTokenizer tokenizer = new JapaneseTokenizer(null, true, JapaneseTokenizer.Mode.SEARCH);
@@ -55,7 +57,8 @@ public class TokenBuilder {
                     }
 
                     if (set.add(base)) {
-                        tokenList.add(new TokenInfo(base, sb.getIndex(), sb.getTimestampEnd(), sb.getTimestampStart(), sb.getFullText(), entry));
+                        tokenList.add(new TokenInfo(base, sb.getIndex(), sb.getTimestampEnd(), sb.getTimestampStart(), sb.getFullText(), entry, audioName, imageName, count));
+                        count++;
                     }
                 }
     
@@ -85,6 +88,9 @@ public class TokenBuilder {
 
     public int getNullcount() {
         return nullcount;
+    }
+    public int getCount() {
+        return count;
     }
 
     public static boolean isHiragana(char c) {
