@@ -1,13 +1,12 @@
 com\riley\s2a\AnkiFlashcardBuilder.class
 com\riley\s2a\AnkiExporter.class
 com\riley\s2a\DictionaryParser.class
-com\riley\s2a\App.class
-com\riley\s2a\DictionaryLookup.class
-com\riley\s2a\S2AGui.class
-com\riley\s2a\DictionaryEntry.class
 com\riley\s2a\SubtitleBlock.class
 com\riley\s2a\FfmpegInterface.class
 com\riley\s2a\SubtitleParser.class
+com\riley\s2a\DictionaryLookup.class
+com\riley\s2a\S2AGui.class
 com\riley\s2a\TokenInfo.class
 com\riley\s2a\TokenBuilder.class
 com\riley\s2a\AnkiFlashcard.class
+com\riley\s2a\DictionaryEntry.class
