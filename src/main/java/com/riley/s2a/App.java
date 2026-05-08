@@ -25,7 +25,7 @@ public class App
         parser.parse();
         List<SubtitleBlock> blox = parser.getBlocks();
         TokenBuilder builder = new TokenBuilder();
-        builder.build(blox, fileName, fileName);
+        // builder.build(blox, fileName, fileName);
         List<TokenInfo> tokenBlox = builder.getTokens();
         AnkiFlashcardBuilder flashCardBuilder = new AnkiFlashcardBuilder(tokenBlox);
         List<AnkiFlashcard> flashcards = flashCardBuilder.getCards();

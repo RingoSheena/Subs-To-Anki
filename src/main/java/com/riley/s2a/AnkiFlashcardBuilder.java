@@ -21,8 +21,8 @@ public class AnkiFlashcardBuilder {
             String sentence = token.getText();
             String timestampStart = token.getTimestampStart();
             String timestampEnd = token.getTimestampEnd();
-            String audioName = token.getAudioName() + token.getCount() + ".mp3";
-            String imageName = token.getImageName() + token.getCount() + ".jpg";
+            String audioName = token.getAudioName();
+            String imageName = token.getImageName();
 
             cards.add(new AnkiFlashcard(word, reading, definition, sentence, timestampStart, timestampEnd, audioName, imageName));
         }

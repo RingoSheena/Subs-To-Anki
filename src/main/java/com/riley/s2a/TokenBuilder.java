@@ -22,53 +22,85 @@ public class TokenBuilder {
         this.count = 0;
     }
 
-    public void build(List<SubtitleBlock> subtitleBlocks, String audioName, String imageName) throws IOException {
-        String tsvPath = "C:\\Users\\swift\\OneDrive\\Documents\\Code\\S2A\\s2a\\data\\simpledict.tsv";
-        DictionaryLookup dictionaryLookup = new DictionaryLookup(tsvPath);
+public void build(List<SubtitleBlock> subtitleBlocks, String dictionaryPath, FfmpegInterface ffmpeg, String mediaName) throws Exception {
+    DictionaryLookup dictionaryLookup = new DictionaryLookup(dictionaryPath);
+
+    List<TokenInfo> tokenList = new ArrayList<>();
+    Set<String> set = new HashSet<>();
+
+    for (SubtitleBlock sb : subtitleBlocks) {
         JapaneseTokenizer tokenizer = new JapaneseTokenizer(null, true, JapaneseTokenizer.Mode.SEARCH);
-        
-        CharTermAttribute surfaceForm = tokenizer.addAttribute(CharTermAttribute.class);
-        BaseFormAttribute baseForm = tokenizer.addAttribute(BaseFormAttribute.class);
 
-        List<TokenInfo> tokenList = new ArrayList<>();
-        Set<String> set = new HashSet<>();
+        try {
+            tokenizer.setReader(new StringReader(sb.getFullText()));
 
-        for (SubtitleBlock sb : subtitleBlocks) {
-            try {
-                tokenizer.setReader(new StringReader(sb.getFullText()));
-                tokenizer.reset();
-    
-                while (tokenizer.incrementToken()) {
-                    String surface = surfaceForm.toString();
-                    String base = baseForm.getBaseForm(); 
+            CharTermAttribute surfaceForm = tokenizer.addAttribute(CharTermAttribute.class);
+            BaseFormAttribute baseForm = tokenizer.addAttribute(BaseFormAttribute.class);
 
-                    if (base == null) base = surface;
-                    if (surface.length() == 1 && (isHiragana(surface.charAt(0)) || isKatakana(surface.charAt(0)))) { continue; }
-                    if (!isJapanese(base) || endsWithSmallTsu(base)) { continue; }
-                    if (set.contains(surface)) { continue; }
+            tokenizer.reset();
 
-                    DictionaryEntry entry = dictionaryLookup.lookup(base);
-                    if (entry == null) {
-                        entry = dictionaryLookup.lookup(surface);
-                    }    
-                    if (entry == null) {
-                        nullcount++;
-                        continue;
-                    }
+            while (tokenizer.incrementToken()) {
+                String surface = surfaceForm.toString();
+                String base = baseForm.getBaseForm();
 
-                    if (set.add(base)) {
-                        tokenList.add(new TokenInfo(base, sb.getIndex(), sb.getTimestampEnd(), sb.getTimestampStart(), sb.getFullText(), entry, audioName, imageName, count));
-                        count++;
-                    }
+                if (base == null) {
+                    base = surface;
                 }
-    
-                tokenizer.end();
-            } finally {
-                tokenizer.close();
+
+                if (surface.length() == 1 && (isHiragana(surface.charAt(0)) || isKatakana(surface.charAt(0)))) {
+                    continue;
+                }
+
+                if (!isJapanese(base) || endsWithSmallTsu(base)) {
+                    continue;
+                }
+
+                if (set.contains(base)) {
+                    continue;
+                }
+
+                DictionaryEntry entry = dictionaryLookup.lookup(base);
+
+                if (entry == null) {
+                    entry = dictionaryLookup.lookup(surface);
+                }
+
+                if (entry == null) {
+                    nullcount++;
+                    continue;
+                }
+
+                if (set.add(base)) {
+                    ffmpeg.extractAudio(sb.getTimestampStart(), sb.getTimestampEnd(), mediaName);
+                    ffmpeg.extractImage(sb.getTimestampStart(), mediaName);
+
+                    String audioName = ffmpeg.getAudioName();
+                    String imageName = ffmpeg.getImageName();
+
+                    tokenList.add(new TokenInfo(
+                        base,
+                        sb.getIndex(),
+                        sb.getTimestampStart(),
+                        sb.getTimestampEnd(),
+                        sb.getFullText(),
+                        entry,
+                        audioName,
+                        imageName,
+                        count
+                    ));
+
+                    count++;
+                }
             }
+
+            tokenizer.end();
+        } finally {
+            tokenizer.close();
         }
-        this.tokens = tokenList;
     }
+
+    this.tokens = tokenList;
+}
 
     public List<TokenInfo> getTokens() {
         return this.tokens;

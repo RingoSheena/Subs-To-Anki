@@ -43,7 +43,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.6.3</version>
         <configuration>
-          <mainClass>com.riley.s2a.App</mainClass>
+          <mainClass>com.riley.s2a.S2AGui</mainClass>
         </configuration>
       </plugin>
     </plugins>
