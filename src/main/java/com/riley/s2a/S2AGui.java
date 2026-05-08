@@ -137,10 +137,6 @@ public class S2AGui extends JFrame {
         String subtitlePath = subtitleFileField.getText().trim();
         String ankiMediaFolder = ankiMediaFolderField.getText().trim();
         String mediaName = mediaNameField.getText().trim();
-        mediaName = mediaName.replace(".mp3", "");
-        mediaName = mediaName.replace(".jpg", "");
-        mediaName = mediaName.replace(".jpeg", "");
-        mediaName = mediaName.replace(".png", "");
         String tsvOutputPath = tsvOutputField.getText().trim();
         String dictionaryPath = dictionaryFileField.getText().trim();
 
