@@ -23,16 +23,14 @@ public class AnkiExporter {
             Files.createDirectories(outputFile.getParent());
         }
 
-        try (PrintWriter writer = new PrintWriter(
-                Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)
-        )) {
-            for (AnkiFlashcard card : cards) {
-                String front = makeFront(card);
-                String back = makeBack(card);
+        PrintWriter writer = new PrintWriter(Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8));
+        for (AnkiFlashcard card : cards) {
+            String front = makeFront(card);
+            String back = makeBack(card);
 
-                writer.println(clean(front) + "\t" + clean(back));
-            }
+            writer.println(clean(front) + "\t" + clean(back));
         }
+        writer.close();
     }
 
     private String makeFront(AnkiFlashcard card) {
@@ -43,6 +41,8 @@ public class AnkiExporter {
         return card.getReading()
                 + "<br><br>"
                 + card.getSentence()
+                + "<br><br>"
+                + card.getDefinition()
                 + "<br><br>"
                 + makeAudioField(card.getAudioName())
                 + "<br><br>"
