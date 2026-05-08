@@ -3,13 +3,15 @@ package com.riley.s2a;
 public class TokenInfo {
     private String word;
     private int subIndex;
-    private String timestamp;
+    private String timestampEnd;
+    private String timestampStart;
     private String text;
 
-    public TokenInfo(String word, int subIndex, String timestamp, String text) {
+    public TokenInfo(String word, int subIndex, String timestampEnd, String timestampStart, String text) {
         this.word = word;
         this.subIndex = subIndex;
-        this.timestamp = timestamp;
+        this.timestampEnd = timestampEnd;
+        this.timestampStart = timestampStart;
         this.text = text;
     }
 
@@ -21,8 +23,12 @@ public class TokenInfo {
         return subIndex;
     }
 
-    public String getTimestamp() {
-        return timestamp;
+    public String getTimestampEnd() {
+        return timestampEnd;
+    }
+
+    public String getTimestampStart() {
+        return timestampStart;
     }
 
     public String getText() {
@@ -33,7 +39,7 @@ public class TokenInfo {
         StringBuilder sb = new StringBuilder();
         sb.append(word).append("\n");
         sb.append(subIndex).append("\n");
-        sb.append(timestamp).append("\n");
+        sb.append(timestampEnd).append(" --> ").append(timestampStart).append("\n");
         sb.append(String.join("\n", text)).append("\n");
         return sb.toString();
     }

@@ -36,12 +36,15 @@ public class TokenBuilder {
                     String surface = surfaceForm.toString();
                     String base = baseForm.getBaseForm(); 
 
+                    if (base == null) base = surface;
                     if (surface.length() == 1 && (isHiragana(surface.charAt(0)) || isKatakana(surface.charAt(0)))) { continue; }
-                    if (!isJapanese(surface) || endsWithSmallTsu(surface)) { continue; }
-                    if (set.contains(base)) { continue; }
+                    if (!isJapanese(base) || endsWithSmallTsu(base)) { continue; }
+                    if (set.contains(surface)) { continue; }
 
-                    if (set.add(surface)) {
-                        tokenList.add(new TokenInfo(surface, sb.getIndex(), sb.getTimestamp(), sb.getFullText()));
+
+
+                    if (set.add(base)) {
+                        tokenList.add(new TokenInfo(base, sb.getIndex(), sb.getTimestampStart(), sb.getTimestampEnd(), sb.getFullText()));
                     }
                 }
     

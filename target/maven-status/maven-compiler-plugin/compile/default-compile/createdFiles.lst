@@ -1,5 +1,6 @@
 com\riley\s2a\TokenInfo.class
 com\riley\s2a\TokenBuilder.class
 com\riley\s2a\SubtitleBlock.class
+com\riley\s2a\TokenBlock.class
 com\riley\s2a\App.class
 com\riley\s2a\SubtitleParser.class

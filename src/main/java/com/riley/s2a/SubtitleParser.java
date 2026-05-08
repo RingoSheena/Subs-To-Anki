@@ -8,19 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SubtitleParser {
-    private Path path;
+    private String subtitlePathString;
     private List<SubtitleBlock> blocks;
 
-    public SubtitleParser(Path path) {
-        this.path = path;
+    public SubtitleParser(String subtitlePathString) {
+        this.subtitlePathString = subtitlePathString;
         this.blocks = new ArrayList<SubtitleBlock>();
     }
 
     public String getPath() {
-        return path.toString();
+        return subtitlePathString;
     }
 
     public void parse() throws IOException {
+        Path path = Path.of(subtitlePathString);
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
         List<SubtitleBlock> blockList = new ArrayList<>();
         int i = 0;
@@ -34,7 +35,7 @@ public class SubtitleParser {
             i++;
 
             if (i >= lines.size()) break;
-            String time = lines.get(i).trim();
+            String[] timestamp = lines.get(i).trim().split(" --> ");
             i++;
 
             List<String> text = new ArrayList<>();
@@ -43,7 +44,7 @@ public class SubtitleParser {
                 i++;
             }
 
-            blockList.add(new SubtitleBlock(index, time, text));
+            blockList.add(new SubtitleBlock(index, timestamp[0], timestamp[1], text));
         }
         this.blocks = blockList;
     }
@@ -56,7 +57,7 @@ public class SubtitleParser {
         StringBuilder sb = new StringBuilder();
         for (SubtitleBlock block : blocks) {
             sb.append(block.getIndex()).append("\n")
-            .append(block.getTimestamp()).append("\n")
+            .append(block.getTimestampStart()).append(block.getTimestampEnd()).append("\n")
             .append(block.getFullText()).append("\n");
         }
         return sb.toString();
